@@ -40,8 +40,8 @@ CREATE TABLE IF NOT EXISTS products (
 -- Données de départ
 -- ---------------------------------------------------------------
 INSERT INTO users (username, email, password, role, address) VALUES
-    ('admin',  'admin@webshop.com', 'admin123',  'admin', '1 Rue de la Paix, 1000 Lausanne'),
-    ('alice',  'alice@webshop.com', 'password1', 'user',  '42 Avenue des Alpes, 1200 Genève');
+    ('admin',  'admin@webshop.com', '$2b$10$NvnEjtAifmLNzBYsqcaRi.g5VziwwBCIsK8wrUYXzFEslXkiB.xSq',  'admin', '1 Rue de la Paix, 1000 Lausanne'),
+    ('alice',  'alice@webshop.com', '$2b$10$1WcMKO6tUDBz44/bpSpZ8uIyTbUrp9F3JZwyMInDZsfQG6YmptxJG', 'user',  '42 Avenue des Alpes, 1200 Genève');
 
 INSERT INTO products (name, description, price, image_url) VALUES
     (
