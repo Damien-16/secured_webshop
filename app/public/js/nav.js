@@ -39,7 +39,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 if (response.ok) {
                     alert('Bienvenue ' + data.user.email);
-                    window.location.href = '/'; 
+                    window.location.href = '/';
                 } else {
                     document.getElementById('message').textContent = data.error || 'Erreur lors de la connexion';
                 }

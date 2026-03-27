@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Secure Shop - Inscription</title>
     <link rel="stylesheet" href="/css/main.css">
 </head>
+
 <body>
     <div id="topbar"></div>
 
@@ -14,8 +16,26 @@
             <div class="container">
                 <h1>Inscription</h1>
 
-                <p>Placer un formulaire d'inscription ici</p>
-
+                <form id="registerForm">
+                    <div class="form-group">
+                        <label for="username">Nom d'utilisateur</label>
+                        <input type="text" id="username" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="address">Adresse</label>
+                        <input type="text" id="address" placeholder="1 Rue de la Paix, 1000 Lausanne" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Mot de passe</label>
+                        <input type="password" id="password" required>
+                    </div>
+                    <button type="submit">S'inscrire</button>
+                    <p id="message" style="margin-top: 15px; font-weight: bold;"></p>
+                </form>
             </div>
         </section>
     </main>
@@ -27,5 +47,47 @@
     </footer>
 
     <script src="/js/nav.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const registerForm = document.getElementById('registerForm');
+            if (registerForm) {
+                registerForm.addEventListener('submit', async (e) => {
+                    e.preventDefault();
+
+                    const username = document.getElementById('username').value;
+                    const email = document.getElementById('email').value;
+                    const address = document.getElementById('address').value;
+                    const password = document.getElementById('password').value;
+                    const messageEl = document.getElementById('message');
+
+                    try {
+                        const response = await fetch('/api/auth/register', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ username, email, address, password })
+                        });
+
+                        const data = await response.json();
+
+                        if (response.ok) {
+                            messageEl.style.color = 'green';
+                            messageEl.textContent = 'Inscription réussie ! Vous pouvez maintenant vous connecter.';
+                            setTimeout(() => {
+                                window.location.href = '/login';
+                            }, 2000);
+                        } else {
+                            messageEl.style.color = 'red';
+                            messageEl.textContent = data.error || 'Erreur lors de l\'inscription';
+                        }
+                    } catch (error) {
+                        console.error('Erreur réseau :', error);
+                        messageEl.style.color = 'red';
+                        messageEl.textContent = 'Erreur réseau';
+                    }
+                });
+            }
+        });
+    </script>
 </body>
+
 </html>
