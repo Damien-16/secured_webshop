@@ -2,20 +2,43 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- 1. Gestion du Menu (Topbar) ---
     const nav = document.getElementById('topbar');
     if (nav) {
+        const token = localStorage.getItem('token');
+        const user = JSON.parse(localStorage.getItem('user'));
+        
+        let authLinks = `
+            <a href="/login">Connexion</a>
+            <a href="/register">Inscription</a>
+        `;
+        
+        if (token && user) {
+            authLinks = `
+                <a href="/profile">Profil</a>
+                ${user.role === 'admin' ? '<a href="/admin">Admin</a>' : ''}
+                <a href="#" id="logoutBtn">Déconnexion (${user.email})</a>
+            `;
+        }
+
         nav.innerHTML = `
         <header class="topbar">
             <div class="container">
                 <div class="brand">Secure Shop</div>
                 <nav class="menu">
                     <a href="/">Accueil</a>
-                    <a href="/profile">Profil</a>
-                    <a href="/admin">Admin</a>
-                    <a href="/login">Connexion</a>
-                    <a href="/register">Inscription</a>
+                    ${authLinks}
                 </nav>
             </div>
         </header>
         `;
+
+        const logoutBtn = document.getElementById('logoutBtn');
+        if (logoutBtn) {
+            logoutBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                localStorage.removeItem('token');
+                localStorage.removeItem('user');
+                window.location.href = '/login';
+            });
+        }
     }
 
     // --- 2. Logique de Connexion ---
@@ -38,6 +61,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 const data = await response.json();
 
                 if (response.ok) {
+                    localStorage.setItem('token', data.token);
+                    localStorage.setItem('user', JSON.stringify(data.user));
                     alert('Bienvenue ' + data.user.email);
                     window.location.href = '/';
                 } else {

@@ -1,5 +1,6 @@
 const db = require('../config/db');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 
 module.exports = {
 
@@ -34,7 +35,18 @@ module.exports = {
                 return res.status(401).json({ error: 'Email ou mot de passe incorrect' });
             }
 
-            res.json({ message: 'Connexion réussie', user: user });
+            // Génération du token JWT
+            const token = jwt.sign(
+                { id: user.id, role: user.role, email: user.email },
+                process.env.JWT_SECRET,
+                { expiresIn: '2h' }
+            );
+
+            res.json({ 
+                message: 'Connexion réussie', 
+                token: token,
+                user: { id: user.id, email: user.email, role: user.role }
+            });
         });
     },
 

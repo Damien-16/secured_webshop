@@ -46,8 +46,19 @@
 
     <script src="/js/nav.js"></script>
     <script>
-        fetch('/api/admin/users')
-            .then(r => r.json())
+        const token = localStorage.getItem('token');
+        fetch('/api/admin/users', {
+            headers: { 'Authorization': `Bearer ${token}` }
+        })
+            .then(res => {
+                if (!res.ok) {
+                    if (res.status === 401 || res.status === 403) {
+                        window.location.href = '/login';
+                    }
+                    throw new Error('Non autorisé');
+                }
+                return res.json();
+            })
             .then(users => {
                 const tbody = document.getElementById('user-table-body');
                 tbody.innerHTML = users.map(u => `
@@ -60,9 +71,10 @@
                     </tr>
                 `).join('');
             })
-            .catch(() => {
+            .catch((err) => {
+                console.error(err);
                 document.getElementById('user-table-body').innerHTML =
-                    '<tr><td colspan="5">Erreur lors du chargement</td></tr>';
+                    '<tr><td colspan="5">Erreur lors du chargement ou accès refusé</td></tr>';
             });
     </script>
 </body>

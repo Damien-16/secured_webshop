@@ -72,8 +72,16 @@
         // Chargement du profil au démarrage
         // ------------------------------------------------------------------
         async function loadProfile() {
-            const res = await fetch('/api/profile');
-            if (!res.ok) return;
+            const token = localStorage.getItem('token');
+            const res = await fetch('/api/profile', {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            if (!res.ok) {
+                if (res.status === 401 || res.status === 403) {
+                    window.location.href = '/login';
+                }
+                return;
+            }
             const user = await res.json();
 
             document.getElementById('username').textContent = user.username;
@@ -98,9 +106,13 @@
             e.preventDefault();
             const address = document.getElementById('address').value;
 
+            const token = localStorage.getItem('token');
             const res = await fetch('/api/profile', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
                 body: JSON.stringify({ address })
             });
 
@@ -120,7 +132,12 @@
             const formData = new FormData();
             formData.append('photo', file);
 
-            const res = await fetch('/api/profile/photo', { method: 'POST', body: formData });
+            const token = localStorage.getItem('token');
+            const res = await fetch('/api/profile/photo', { 
+                method: 'POST', 
+                headers: { 'Authorization': `Bearer ${token}` },
+                body: formData 
+            });
             const data = await res.json();
             showMessage(res.ok ? 'success' : 'error', data.message || data.error);
             if (res.ok) loadProfile();
