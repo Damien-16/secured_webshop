@@ -46,16 +46,23 @@
 
     <script src="/js/nav.js"></script>
     <script>
+        const user = JSON.parse(localStorage.getItem('user'));
+        if (!user || user.role !== 'admin') {
+            window.location.href = '/';
+        }
+
         const token = localStorage.getItem('token');
         fetch('/api/admin/users', {
             headers: { 'Authorization': `Bearer ${token}` }
         })
             .then(res => {
                 if (!res.ok) {
-                    if (res.status === 401 || res.status === 403) {
+                    if (res.status === 401) {
                         window.location.href = '/login';
+                    } else if (res.status === 403) {
+                        window.location.href = '/';
                     }
-                    throw new Error('Non autorisé');
+                    throw new Error('Accès refusé');
                 }
                 return res.json();
             })

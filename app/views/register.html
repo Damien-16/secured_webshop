@@ -14,9 +14,8 @@
     <main>
         <section class="hero">
             <div class="container">
-                <h1>Inscription</h1>
-
                 <form id="registerForm">
+                    <h1>Inscription</h1>
                     <div class="form-group">
                         <label for="username">Nom d'utilisateur</label>
                         <input type="text" id="username" required>
@@ -34,7 +33,10 @@
                         <input type="password" id="password" required>
                     </div>
                     <button type="submit">S'inscrire</button>
-                    <p id="message" style="margin-top: 15px; font-weight: bold;"></p>
+                    <p id="message" class="message"></p>
+                    <div style="margin-top: 15px; text-align: center; font-size: 0.9rem; color: var(--muted);">
+                        Déjà un compte ? <a href="/login" style="color: var(--primary); font-weight: 600;">Se connecter ici</a>
+                    </div>
                 </form>
             </div>
         </section>

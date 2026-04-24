@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
             authLinks = `
                 <a href="/profile">Profil</a>
                 ${user.role === 'admin' ? '<a href="/admin">Admin</a>' : ''}
-                <a href="#" id="logoutBtn">Déconnexion (${user.email})</a>
+                <a href="#" id="logoutBtn" class="btn-logout">Déconnexion (${user.email})</a>
             `;
         }
 

@@ -12,9 +12,8 @@
     <main>
         <section class="hero">
             <div class="container">
-                <h1>Connexion</h1>
-                
 <form id="loginForm">
+    <h1>Connexion</h1>
     <div class="form-group">
         <label for="email">Email</label>
         <input type="email" id="email" required>
@@ -24,7 +23,10 @@
         <input type="password" id="password" required>
     </div>
     <button type="submit">Se connecter</button>
-    <p id="message" style="color: red;"></p>
+    <p id="message" class="message" style="color: red;"></p>
+    <div style="margin-top: 15px; text-align: center; font-size: 0.9rem; color: var(--muted);">
+        Pas encore de compte ? <a href="/register" style="color: var(--primary); font-weight: 600;">S'inscrire ici</a>
+    </div>
 </form>
 
             </div>
