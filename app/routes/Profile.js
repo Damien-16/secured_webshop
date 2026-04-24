@@ -3,9 +3,9 @@ const multer     = require('multer');
 const path       = require('path');
 const router     = express.Router();
 const controller = require('../controllers/ProfileController');
-const auth       = require('../middleware/auth');
+const { auth }   = require('../middleware/auth');
 
-router.use(auth); // Applique le middleware à toutes les routes de ce fichier
+router.use(auth);
 
 // Configuration de multer pour l'upload de photos
 const storage = multer.diskStorage({
